@@ -29,6 +29,8 @@ jobs:
         with:
           pytest-coverage-path: ./pytest-coverage.txt
           junitxml-path: ./pytest.xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
   black:
     runs-on: ubuntu-latest
