@@ -31,7 +31,8 @@ jobs:
           junitxml-path: ./pytest.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
-          env: CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   black:
     runs-on: ubuntu-latest
