@@ -8,14 +8,13 @@ NiPype workflow serializer for use with [`flowview`](https://cmi-dair.github.io/
 
 ```Python
 import nipype.pipeline.engine as pe  # pypeline engine
-import os.path
 from flowdump import run_and_save_workflow
 
 # Typical NiPype workflow creation
 amazing_workflow = pe.Workflow(name="main_workflow")
-# amazing_workflow.connect(...) 
-# amazing_workflow.connect(...) 
-# amazing_workflow.connect(...) 
+# amazing_workflow.connect(...)
+# amazing_workflow.connect(...)
+# amazing_workflow.connect(...)
 
 # Let `flowdump` execute and save pre- and post-execution data.
 run_and_save_workflow(
@@ -35,13 +34,13 @@ from flowdump import WorkflowJSONMeta, save_workflow_json
 
 # Typical NiPype workflow creation
 amazing_workflow = pe.Workflow(name="main_workflow")
-# amazing_workflow.connect(...) 
-# amazing_workflow.connect(...) 
-# amazing_workflow.connect(...) 
+# amazing_workflow.connect(...)
+# amazing_workflow.connect(...)
+# amazing_workflow.connect(...)
 
 # Create workflow metadata object (traces execution time and stage)
 workflow_meta = WorkflowJSONMeta(
-    pipeline_name='My amazing pipeline', 
+    pipeline_name='My amazing pipeline',
     stage='pre'
 )
 # Dump pre-execution workflow

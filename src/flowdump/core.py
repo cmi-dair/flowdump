@@ -1,8 +1,7 @@
 from typing import Any
 
 from nipype import __version__ as version_nipype
-from nipype.pipeline.engine import Workflow, Node
-
+from nipype.pipeline.engine import Node, Workflow
 
 WorkflowRaw = Workflow
 """Alias for internal use."""
@@ -25,10 +24,7 @@ def workflow_container(workflow: Any, meta: Any = None) -> dict:
     -------
     """
     return {
-        'version': {
-            'workflow': VERSION_WORKFLOW,
-            'nipype': version_nipype
-        },
-        'meta': {} if meta is None else meta,
-        'workflow': workflow,
+        "version": {"workflow": VERSION_WORKFLOW, "nipype": version_nipype},
+        "meta": {} if meta is None else meta,
+        "workflow": workflow,
     }
