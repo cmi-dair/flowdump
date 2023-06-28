@@ -146,7 +146,7 @@ class NodeData:
                 command_txt_path = wd_path / 'command.txt'
                 if command_txt_path.exists():
                     with open(command_txt_path, 'r', encoding='utf8') as file:
-                        node_data.result.command_txt = file.readlines()
+                        node_data.result.command_txt = file.read()
 
             return node_data
 
@@ -203,7 +203,10 @@ def _save_workflow_json(
 ):
     node_data = NodeData.from_obj(
         workflow,
-        serializer=_serialize_inout if custom_serializer is None else lambda o: custom_serializer(_serialize_inout, o),
+        serializer=
+        _serialize_inout
+        if custom_serializer is None
+        else lambda o: custom_serializer(_serialize_inout, o),  # type: ignore
         serialze_postex=meta.stage == 'post'
     )
     return workflow_container(workflow=node_data, meta=meta)

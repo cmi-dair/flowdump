@@ -65,7 +65,7 @@ def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]
             tokens.append(('text', line))
 
     # remove last three text tokens before header
-    tokens2 = []
+    tokens2: List[Tuple[str, str]] = []
     for i in range(len(tokens)):
         tok_name, tok_value = tokens[i]
         if tok_name.startswith('header') and len(tokens2) > 0:
@@ -89,8 +89,8 @@ def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]
 
     # Parser
 
-    document = {}
-    section = {}
+    document: Dict[str, Dict[str, str]] = {}
+    section: Dict[str, str] = {}
     key = ''
 
     for tok_name, tok_value in tokens:
