@@ -97,7 +97,7 @@ class NodeData:
     def from_obj(
             cls,
             obj,
-            serializer:  Callable[[object], object],
+            serializer: Callable[[object], object],
             serialze_postex: bool = True
     ):
         if isinstance(obj, (NodeRaw, WorkflowRaw)):
@@ -153,7 +153,7 @@ class NodeData:
         graph = _workflow_get_graph(obj) if isinstance(obj, WorkflowRaw) else obj
 
         for child_node in graph.nodes:
-            node_data_child = cls.from_obj(child_node, serialze_postex=serialze_postex)
+            node_data_child = cls.from_obj(child_node, serialze_postex=serialze_postex, serializer=serializer)
             node_data.nodes.append(node_data_child)
 
         for child_edge in graph.edges:
@@ -196,6 +196,19 @@ class WorkflowJSONEncoder(json.JSONEncoder):
         return super().default(o)
 
 
+def _save_workflow_json(
+        workflow: WorkflowRaw,
+        meta: WorkflowJSONMeta,
+        custom_serializer: Optional[Callable[[Callable[[object], object], object], object]] = None
+):
+    node_data = NodeData.from_obj(
+        workflow,
+        serializer=_serialize_inout if custom_serializer is None else lambda o: custom_serializer(_serialize_inout, o),
+        serialze_postex=meta.stage == 'post'
+    )
+    return workflow_container(workflow=node_data, meta=meta)
+
+
 def save_workflow_json(
         filename: Union[str, PathLike],
         workflow: WorkflowRaw,
@@ -208,16 +221,28 @@ def save_workflow_json(
     ----------
     filename : Filename to save to.
     workflow : Workflow object.
-    meta : Meta information.
+    meta : Meta information. meta.stage has to be 'post' to trigger post-execution data serialization.
     custom_serializer : Optional function to convert custom node input and output data types.
         First argument is the internal serialization function, second any given object.
     """
-
-    node_data = NodeData.from_obj(
-        workflow,
-        serializer=_serialize_inout if custom_serializer is None else lambda o: custom_serializer(_serialize_inout, o),
-        serialze_postex=meta.stage == 'post'
-    )
-    obj = workflow_container(workflow=node_data, meta=meta)
+    obj = _save_workflow_json(workflow, meta, custom_serializer)
     with open(filename, 'w', encoding='utf-8') as file:
         json.dump(obj, file, indent=2, cls=WorkflowJSONEncoder)
+
+
+def save_workflow_json_string(
+        workflow: WorkflowRaw,
+        meta: WorkflowJSONMeta,
+        custom_serializer: Optional[Callable[[Callable[[object], object], object], object]] = None
+) -> str:
+    """
+    Serialize and save workflow object to a file.
+    Parameters
+    ----------
+    workflow : Workflow object.
+    meta : Meta information. meta.stage has to be 'post' to trigger post-execution data serialization.
+    custom_serializer : Optional function to convert custom node input and output data types.
+        First argument is the internal serialization function, second any given object.
+    """
+    obj = _save_workflow_json(workflow, meta, custom_serializer)
+    return json.dumps(obj, indent=2, cls=WorkflowJSONEncoder)
