@@ -1,7 +1,7 @@
 import re
 from abc import ABC
 from os import PathLike
-from typing import Dict, List, Tuple, Union
+from typing import Dict, Generator, Iterable, List, Tuple, Union
 
 
 class ReportSection(ABC):
@@ -15,57 +15,46 @@ class ReportSection(ABC):
 rx_star_item = r"^\*\s(\S+)\s:\s(.*)$"
 
 
-def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]:
+def _lex_report_rst(line_stream: Iterable[str]):
     """
-    Read NiPype report.rst data.
-    NiPypes RST 'dialect' does not work with any RST library I could find.
-    For anyone tempted to make this better: Don't waste your time.
-
-    Parameters
-    ----------
-    filename : Filepath to report.rst
-
-    Returns
-    -------
-    Nested dictionary of sections and key-value pairs.
+    Simple lexer.
     """
     tokens: List[Tuple[str, str]] = []
-    with open(filename, encoding="utf8") as file:
-        # Lexer
 
-        line = ""
-        skip = 0
+    line = ""
+    last_line = line
+    skip = 0
 
-        while True:
-            last_line = line
-            line = file.readline()
-            if skip > 0:
-                skip -= 1
-                continue
-            if not line:
-                break
-            line = line[:-1]
+    for line in line_stream:
+        if skip > 0:
+            skip -= 1
+            continue
+        if not line:
+            break
+        line = line[:-1]
 
-            # Headings
-            # More efficient with this order of expressions
-            # noinspection PyChainedComparisons
-            if (
+        # Headings
+        # More efficient with this order of expressions
+        # noinspection PyChainedComparisons
+        if (
                 len(line) > 3
                 and line[0] in ("=", "-", "~")
                 and line.count(line[0]) == len(line)
-            ):
-                tokens.append(("header" + line[0], last_line))
-                skip = 2
-                continue
+        ):
+            tokens.append(("header" + line[0], last_line))
+            skip = 2
+            continue
 
-            # Key value list
-            match_star = re.search(rx_star_item, line)
-            if match_star is not None:
-                tokens.append(("key*", match_star.group(1)))
-                tokens.append(("val*", match_star.group(2)))
-                continue
+        # Key value list
+        match_star = re.search(rx_star_item, line)
+        if match_star is not None:
+            tokens.append(("key*", match_star.group(1)))
+            tokens.append(("val*", match_star.group(2)))
+            continue
 
-            tokens.append(("text", line))
+        tokens.append(("text", line))
+
+        last_line = line
 
     # remove last three text tokens before header
     tokens2: List[Tuple[str, str]] = []
@@ -90,13 +79,18 @@ def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]
         tokens2.append(tokens[i])
     tokens = tokens2
 
-    # Parser
+    return tokens
 
+
+def _parse_report_rst(token_stream: Iterable[Tuple[str, str]]) -> Dict[str, Dict[str, str]]:
+    """
+    Simple parser.
+    """
     document: Dict[str, Dict[str, str]] = {}
     section: Dict[str, str] = {}
     key = ""
 
-    for tok_name, tok_value in tokens:
+    for tok_name, tok_value in token_stream:
         if tok_name.startswith("header"):
             section = {}
             document[tok_value] = section
@@ -107,5 +101,57 @@ def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]
         if tok_name.startswith("val"):
             section[key] = tok_value
             continue
+
+    return document
+
+
+def read_report_rst_str(report_rst: str) -> Dict[str, Dict[str, str]]:
+    """
+    Read NiPype report.rst data.
+    NiPypes RST 'dialect' does not work with any RST library I could find.
+    For anyone tempted to make this better: Don't waste your time.
+
+    Parameters
+    ----------
+    report_rst : report.rst as string.
+
+    Returns
+    -------
+    Nested dictionary of sections and key-value pairs.
+    """
+
+    lines = report_rst.splitlines(True)
+    tokens = _lex_report_rst(lines)
+    document = _parse_report_rst(tokens)
+
+    return document
+
+
+def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]:
+    """
+    Read NiPype report.rst data.
+    NiPypes RST 'dialect' does not work with any RST library I could find.
+    For anyone tempted to make this better: Don't waste your time.
+
+    Parameters
+    ----------
+    filename : Filepath to report.rst
+
+    Returns
+    -------
+    Nested dictionary of sections and key-value pairs.
+    """
+
+    def _stream_file_lines(filename: Union[str, PathLike]) -> Generator[str, None, None]:
+        with open(filename, encoding="utf8") as file:
+            while True:
+                line = file.readline()
+                if not line:
+                    return
+                yield line
+
+    lines = _stream_file_lines(filename)
+    tokens = _lex_report_rst(lines)
+    document = _parse_report_rst(tokens)
 
     return document
