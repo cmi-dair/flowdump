@@ -149,4 +149,4 @@ def test_workflow_from_scratch():
     assert ReportSection.EXECUTION_INPUTS in document
     assert ReportSection.EXECUTION_OUTPUTS in document
 
-    assert document[ReportSection.ENVIRONMENT]['OS'] == 'Linux'
+    assert document[ReportSection.ENVIRONMENT]["OS"] == "Linux"

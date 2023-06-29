@@ -37,9 +37,9 @@ def _lex_report_rst(line_stream: Iterable[str]):
         # More efficient with this order of expressions
         # noinspection PyChainedComparisons
         if (
-                len(line) > 3
-                and line[0] in ("=", "-", "~")
-                and line.count(line[0]) == len(line)
+            len(line) > 3
+            and line[0] in ("=", "-", "~")
+            and line.count(line[0]) == len(line)
         ):
             tokens.append(("header" + line[0], last_line))
             skip = 2
@@ -82,7 +82,9 @@ def _lex_report_rst(line_stream: Iterable[str]):
     return tokens
 
 
-def _parse_report_rst(token_stream: Iterable[Tuple[str, str]]) -> Dict[str, Dict[str, str]]:
+def _parse_report_rst(
+    token_stream: Iterable[Tuple[str, str]]
+) -> Dict[str, Dict[str, str]]:
     """
     Simple parser.
     """
@@ -142,7 +144,9 @@ def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]
     Nested dictionary of sections and key-value pairs.
     """
 
-    def _stream_file_lines(filename: Union[str, PathLike]) -> Generator[str, None, None]:
+    def _stream_file_lines(
+        filename: Union[str, PathLike]
+    ) -> Generator[str, None, None]:
         with open(filename, encoding="utf8") as file:
             while True:
                 line = file.readline()

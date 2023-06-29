@@ -5,7 +5,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![L-GPL License](https://img.shields.io/badge/license-L--GPL-blue.svg)](LICENSE)
 
-NiPype workflow serializer for use with [`flowview`](https://cmi-dair.github.io/flowview/).
+NiPype-1 workflow serializer for use with [`flowview`](https://cmi-dair.github.io/flowview/).
 
 ## Usage
 
@@ -30,7 +30,7 @@ run_and_save_workflow(
 
 ### Advanced:
 
-If more control over the workflow execution is needed
+If more control over the workflow execution is needed:
 
 ```Python
 import nipype.pipeline.engine as pe  # pypeline engine
@@ -70,7 +70,7 @@ save_workflow_json(
 
 ### Custom field serialization
 
-Custom serializers can be implemented for projects with custom NiPype Node types
+Custom serializers can be implemented for projects with custom NiPype Node types:
 
 ```Python
 def my_custom_serializer(
@@ -87,16 +87,3 @@ save_workflow_json(
     meta=workflow_meta
 )
 ```
-
-## Todo
-
-This is a template repository. Below is a checklist of things you should do to use it:
-
-1. Rewrite this `README` file.
-2. Update the pre-commit versions in `.pre-commit-config.yaml`.
-3. Install the `pre-commit` hooks.
-4. Update the `LICENSE` file to your desired license and set the year.
-5. Replace "ENTER_YOUR_EMAIL_ADDRESS" in `CODE_OF_CONDUCT.md`
-6. Remove the placeholder src and test files, these are there merely to show how the CI works.
-7. Update `pyproject.toml`
-8. Update the name of `src/APP_NAME`
