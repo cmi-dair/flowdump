@@ -16,7 +16,9 @@ from .nipype_report_parser import ReportSection, read_report_rst
 
 
 def _object_as_strdict(obj: object) -> Dict[str, str]:
-    """Extracts and converts all fields of an object to a {str: str} dict."""
+    """
+    Extracts and converts all fields of an object to a {str: str} dict.
+    """
     if isinstance(obj, dict):
         obj_dict = obj
     elif hasattr(obj, "__dict__"):
@@ -29,6 +31,14 @@ def _object_as_strdict(obj: object) -> Dict[str, str]:
 def _serialize_inout(obj: object) -> object:
     """
     Simple recursive string serialization for NiPype node input and output arguments.
+
+    Parameters
+    ----------
+    obj : The object to serialize.
+
+    Returns
+    -------
+    The serialized object.
     """
     if isinstance(obj, dict):
         return {str(k): _serialize_inout(v) for k, v in obj.items()}
@@ -71,6 +81,8 @@ class EdgeData:
 
 @dataclass
 class NodeResultData:
+    """Data class for serializing workflow node results."""
+
     inputs: dict
     outputs: dict
     runtime_info: dict

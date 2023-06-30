@@ -22,6 +22,7 @@ def workflow_container(workflow: Any, meta: Any = None) -> dict:
     meta : Meta information.
     Returns
     -------
+    dict
     """
     return {
         "version": {"workflow": VERSION_WORKFLOW, "nipype": version_nipype},

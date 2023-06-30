@@ -17,8 +17,17 @@ rx_star_item = r"^\*\s(\S+)\s:\s(.*)$"
 
 def _lex_report_rst(line_stream: Iterable[str]):
     """
-    Simple lexer.
+    Lex NiPype report.rst data into tokens.
+
+    Parameters
+    ----------
+    line_stream : Iterable of lines from report.rst
+
+    Returns
+    -------
+    List of tuples (token_name, token_value)
     """
+    
     tokens: List[Tuple[str, str]] = []
 
     line = ""
@@ -85,8 +94,16 @@ def _lex_report_rst(line_stream: Iterable[str]):
 def _parse_report_rst(
     token_stream: Iterable[Tuple[str, str]]
 ) -> Dict[str, Dict[str, str]]:
-    """
-    Simple parser.
+    """ 
+    Parse token stream into nested dictionary.
+
+    Parameters
+    ----------
+    token_stream : Iterable of tuples (token_name, token_value)
+
+    Returns
+    -------
+    Nested dictionary of sections and key-value pairs.
     """
     document: Dict[str, Dict[str, str]] = {}
     section: Dict[str, str] = {}

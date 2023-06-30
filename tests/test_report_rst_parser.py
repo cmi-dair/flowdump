@@ -140,7 +140,8 @@ Environment
 """
 
 
-def test_workflow_from_scratch():
+def test_report_rst_parsing():
+    """Test parsing of report.rst file."""
     document = read_report_rst_str(EXAMPLE_REPORT_RST)
 
     assert ReportSection.ENVIRONMENT in document

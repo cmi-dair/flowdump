@@ -7,9 +7,18 @@
 
 NiPype-1 workflow serializer for use with [`flowview`](https://cmi-dair.github.io/flowview/).
 
+## Installation
+
+`flowdump` is available on PyPI and can be installed with `pip`:
+
+```bash
+pip install flowdump
+```
+
 ## Usage
 
-### Simple:
+Using `flowdump` is as simple as calling `run_and_save_workflow` on a NiPype-1 workflow object.
+This will execute the workflow and save the pre- and post-execution workflow data to JSON files.
 
 ```Python
 import nipype.pipeline.engine as pe  # pypeline engine
@@ -30,7 +39,9 @@ run_and_save_workflow(
 
 ### Advanced:
 
-If more control over the workflow execution is needed:
+If more control over the workflow execution is needed, the workflow can be
+serialized manually.
+
 
 ```Python
 import nipype.pipeline.engine as pe  # pypeline engine
@@ -70,7 +81,10 @@ save_workflow_json(
 
 ### Custom field serialization
 
-Custom serializers can be implemented for projects with custom NiPype Node types:
+Custom serializers can be implemented for projects with custom NiPype Node types.
+The serializer is a function that takes a the default `flowdump` serializer 
+function (to optionally fall back to) and an object and returns a JSON-serializable 
+object.
 
 ```Python
 def my_custom_serializer(
