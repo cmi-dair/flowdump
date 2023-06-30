@@ -23,14 +23,14 @@ def run_and_save_workflow(
     out_dir : The directory to save the results to.
     workflow_name : The name of the workflow. If None, the name will be "Workflow".
     custom_serializer : An optional custom serializer to use when saving the workflow JSON.
-        Accepts a function that takes the default flowdump serializer and an object and 
+        Accepts a function that takes the default flowdump serializer and an object and
         returns the serialized object.
 
     Returns
     -------
     None
     """
-    
+
     out_dir = pl.Path(out_dir)
     workflow_name = "Workflow" if workflow_name is None else workflow_name
 

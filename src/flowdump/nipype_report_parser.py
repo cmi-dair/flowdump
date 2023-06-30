@@ -27,7 +27,7 @@ def _lex_report_rst(line_stream: Iterable[str]):
     -------
     List of tuples (token_name, token_value)
     """
-    
+
     tokens: List[Tuple[str, str]] = []
 
     line = ""
@@ -94,7 +94,7 @@ def _lex_report_rst(line_stream: Iterable[str]):
 def _parse_report_rst(
     token_stream: Iterable[Tuple[str, str]]
 ) -> Dict[str, Dict[str, str]]:
-    """ 
+    """
     Parse token stream into nested dictionary.
 
     Parameters

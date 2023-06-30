@@ -6,7 +6,7 @@ from flowdump.workflow_json import WorkflowJSONMeta, save_workflow_json_string
 
 def test_workflow_from_scratch():
     """Test 'workflow from scratch' example from NiPype documentation."""
-    
+
     import os  # system functions
     from builtins import range
 
