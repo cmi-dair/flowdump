@@ -5,7 +5,7 @@ description = "NiPype-1 workflow serializer."
 authors = ["Florian Rupprecht <floruppr@gmail.com>"]
 license = "LGPL-2.1"
 readme = "README.md"
-packages = [{include = "src/flowdump"}]
+packages = [{include = "flowdump", from = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.8"
