@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flowdump"
-version = "0.1.0"
+version = "0.1.1"
 description = "NiPype-1 workflow serializer."
 authors = ["Florian Rupprecht <floruppr@gmail.com>"]
 license = "LGPL-2.1"
