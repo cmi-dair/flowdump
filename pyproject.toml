@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "flowdump", from = "src"}]
 
 [tool.poetry.dependencies]
-python = ">=3.7"
+python = ">=3.8"
 nipype = ">=1.0.0, <2.0.0"
 
 [tool.poetry.group.dev.dependencies]
