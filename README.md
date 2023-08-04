@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/cmi-dair/flowdump/branch/main/graph/badge.svg?token=22HWWFWPW5)](https://codecov.io/gh/cmi-dair/flowdump)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![L-GPL License](https://img.shields.io/badge/license-L--GPL-blue.svg)](LICENSE)
+[![pages](https://img.shields.io/badge/api-docs-blue)](https://cmi-dair.github.io/flowdump)
 
 NiPype-1 workflow serializer for use with [`flowview`](https://cmi-dair.github.io/flowview/).
 
